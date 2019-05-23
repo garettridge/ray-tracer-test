@@ -3,41 +3,6 @@ class Ball      // These data members of a Ball below are automatically filled i
 { constructor(               position, size, color, k_a, k_d, k_s, n, k_r, k_refract, refract_index   )
     { Object.assign( this, { position, size, color, k_a, k_d, k_s, n, k_r, k_refract, refract_index } )
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       this.model_transform = Mat4.translation( this.position ).times( Mat4.scale( this.size ) );
       this.m_inv           = Mat4.inverse( this.model_transform );
     }
@@ -45,6 +10,13 @@ class Ball      // These data members of a Ball below are automatically filled i
     { // Given a ray, check if this Ball is in its path.  Its first argument is the ray, a key/value object with an origin and a direction as keys.  The next argument
       // is a record of the nearest intersection found so far (a Ball pointer, a t distance value along the ray, and a normal), updates it if needed, and returns it.
       // Only counts intersections that are at least a given distance ahead along the ray.
+
+
+
+
+
+
+
 
 
 
@@ -165,40 +137,6 @@ class Ray_Tracer extends Scene_Component  // Read in a text file that describes 
       //        or k_refract, multiplied by the "complement" (1-alpha) of the Phong color this recursion.  Use argument is_primary to indicate whether this is the original
       //        ray or a recursion.  Use the argument light_to_check whenever a recursive call to trace() is done for computing a shadow ray.
       
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       if( color_remaining.norm() < .3 )    return Color.of( 0, 0, 0, 1 );  // Each recursion, check if there's enough remaining potential for the pixel to be brightened.
 
       let closest_intersection = { distance: Number.POSITIVE_INFINITY, ball: null, normal: null }    // An empty intersection object
@@ -207,6 +145,48 @@ class Ray_Tracer extends Scene_Component  // Read in a text file that describes 
       
       if( !closest_intersection.ball ) return this.color_missed_ray( ray ); 
       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       if ( is_shadow_ray  ) return closest_intersection.distance < 1 ? "Shadow! The light was blocked." : "No shadow here!";
       
       const intersection_point = ray.origin.plus( ray.dir.times( closest_intersection.distance ) );
@@ -285,8 +265,14 @@ class Ray_Tracer extends Scene_Component  // Read in a text file that describes 
       this.control_panel.appendChild( Object.assign( document.createElement( "div" ), { id:'progress', style:'display:none;' } ) );  this.new_line();
       this.key_triggered_button( "Select Background Effect", ["b"], function() { document.getElementById("background_list").classList.toggle("show"); return false; }, "#8A8A4C" );
       this.key_triggered_button( "Select Test Case", ["t"], function() { document.getElementById("testcase_list").classList.toggle("show"); return false; }, "#4C50AF" );
-      this.control_panel.appendChild( Object.assign( document.createElement( "div" ), { id:'testcase_list', className:'dropdown-content' } ) ); this.new_line();
-      this.control_panel.appendChild( Object.assign( document.createElement( "div" ), { id:'background_list', className:'dropdown-content' } ) );
+
+      this.testcase_list = Object.assign( document.createElement( "div" ), { id:'testcase_list', className:'dropdown-content' } )
+      this.testcase_list.style.background = "#E8F6FF";
+      this.control_panel.appendChild( this.testcase_list );
+
+      this.background_list = Object.assign( document.createElement( "div" ), { id:'background_list', className:'dropdown-content' } );
+      this.background_list .style.background = "#E8F6FF";
+      this.control_panel.appendChild( this.background_list  );
       this.key_triggered_button( "Submit Scene Textbox", ["Alt","s"], this.parse_file, "#3e8e41" );
             
       for( let i in Test_Cases.data() )
@@ -356,6 +342,8 @@ class Ray_Tracer extends Scene_Component  // Read in a text file that describes 
         { this.sample_index = 0;    document.getElementById("progress").style = "display:none"; }
     }
 }
+
+
 
 window.Ray_Tracer_Performance = window.classes.Ray_Tracer_Performance =
 class Ray_Tracer_Performance extends Ray_Tracer
