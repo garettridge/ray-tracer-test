@@ -451,7 +451,7 @@ class Canvas_Manager      // This class manages a whole graphics program for one
       
       this.set_size( dimensions );
       gl.clearColor.apply( gl, background_color );    // Tell the GPU which color to clear the canvas with each frame.
-      gl.disable( gl.DEPTH_TEST );   gl.enable( gl.BLEND );            // Enable Z-Buffering test with blending.
+      gl.enable( gl.DEPTH_TEST );   gl.enable( gl.BLEND );            // Enable Z-Buffering test with blending.
       gl.blendFunc( gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA );           // Specify an interpolation method for blending "transparent" 
                                                                       // triangles over the existing pixels.
       gl.bindTexture(gl.TEXTURE_2D, gl.createTexture() ); // A single red pixel, as a placeholder image to prevent a console warning:
