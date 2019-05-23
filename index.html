@@ -1,0 +1,97 @@
+<!-- Graphics Example Code.  index.html - The web page document containing the canvas (drawing surface), that launches your javascript files.  By Garett //-->
+<!DOCTYPE html> <html> <head> <meta charset="UTF-8"/> <link rel="icon" href="assets/fav.ico">
+<script> window.tiny_graphics = {};             <!--  Store all our JavaScipt code inside of classes here.          //-->
+         window.classes = {}                    
+         </script>        
+<script src=     "tiny-graphics.js" ></script>  <!--  Javascript "include" files.  Any code in them gets executed as part of the page loading. //-->
+<script src=            "common.js" ></script>
+<script src=      "frustum-demo.js" ></script>
+<script src=        "test-cases.js" ></script>
+<script src=        "ray-tracer.js" ></script>
+<script> "use strict"    
+  window.onload = function()                         // ********************* THE ENTRY POINT OF THE WHOLE PROGRAM STARTS HERE ********************* 
+  { const scenes = [ "Ray_Tracer" ]; // Register some scenes to the "Canvas_Manager" object -- which WebGL calls
+                                                                                        // upon every time a draw / keyboard / mouse event happens.
+    const listed_articles = "";
+    window.smart_article = new Smart_Article( scenes, listed_articles );      // Use the Smart_Article class to display this page's content.
+  }
+</script>
+<style>
+  * { font-family: monospace }
+  body { background: DarkGray }
+  div { background: white }
+  canvas { width: 1080px; height: 600px }
+  .nav-button { background:blue; margin-left:30px; padding: 9px }
+  table { border-collapse: collapse; display:block; overflow-x: auto; }
+  .explanation { width:1060px; min-height: 150px; max-height: 200px; padding:0 10px; overflow:auto; transition:1s; overflow-y:scroll; box-shadow: 10px 10px 90px 0 inset Gray }
+  .show-more { display:block; outline:0; margin:-100px 540px; z-index:2; height:70px; width:70px; border-radius:50%; position:absolute; transition: .5s }
+  .fadeout { position:absolute; pointer-events:none; padding:0 10px; margin:-200px 0; width:1060px; height:200px; background:transparent; background-image:linear-gradient( to bottom, transparent 60%, white ); transition:1s }
+  table.control-box { width: 1080px; border:0; margin:0; max-height:380px; transition:.5s; overflow-y:scroll; background:DimGray }
+  table.control-box:hover { max-height:500px }
+  table.control-box td { overflow:hidden; border:0; background:DimGray; border-radius:30px }
+  table.control-box td .control-div { background: #EEEEEE; height:338px; padding: 5px 5px 5px 30px; box-shadow: 25px 0px 60px -15px inset }
+  table.control-box td * { background:transparent }
+  table.control-box .control-div td { border-radius:unset }
+  table.control-box .control-title { padding:7px 40px; color:white; background:DarkSlateGray; box-shadow: 25px 0px 70px -15px inset black }
+  .code-panel { overflow:auto; font-family: monospace; width: 1060px; padding:10px; padding-bottom:40px; max-height: 300px; transition:1s;
+                border-radius:10px; box-shadow: 20px 20px 90px 0px powderblue inset, 5px 5px 30px 0px blue inset }
+  .code-panel:hover { max-height: 400px; transition:.3s }
+  .code-display { min-width:1800px; padding:10px; white-space:pre-wrap; background:transparent }
+  .edit-button { left:800px; z-index:2; position:absolute; outline:0; height:80px; width:80px; border-radius:50% }
+  .live_string { display:inline-block; background: unset }
+  table.class-list td { border-width:thin; background: #EEEEEE; padding:10px }
+  table, th, td { border: 2px solid black; vertical-align: top; white-space: nowrap }
+  button { background: #4C9F50; color: white; padding: 6px; border-radius:9px;
+           box-shadow: 4px 6px 16px 0px rgba(0,0,0,0.3); transition: background .3s, transform .3s }
+  button:hover, button:focus { transform: scale(1.3); color:gold }
+  .link { text-decoration:underline; cursor: pointer }
+  .dropdown { display:inline-block }
+  .dropdown-content { display:inline-block; transition:.2s; 
+  :0px; transform: scaleY(0); overflow:hidden; position: absolute; z-index: 1; background:#E8F6FF; padding: 16px;
+                      margin-left:30px; min-width: 100px; box-shadow: 5px 10px 16px 0px rgba(0,0,0,0.2) inset; border-radius:10px }
+  .dropdown-content a { color: black; padding: 4px 4px; display: block }
+  .dropdown a:hover { background: #f1f1f1 }
+  .shrink{ max-height:0px !important }
+  .show { transform: scaleY(1); height:200px; overflow:auto }
+  .hide { transform: scaleY(0); height:0px; overflow:hidden  }
+</style>
+</head><body>
+<table id="nav_menu" style="display:table; border:0px; width:1080px"><tr><td style="background: cornflowerblue;border:0px;">  
+  <button id="nav_button" class="nav-button">More articles and pretty animations -&gt;</button> 
+    <div id="nav_dropdown" class="dropdown-content"></div>
+  <button id="mainpage_button" class="nav-button">Main page</button>
+  <button id="wanted_button" class="nav-button">Wanted articles -&gt;</button>
+    <div id="wanted_dropdown" class="dropdown-content"></div>
+</td></tr></table>
+<div id="explanation_section" class="explanation"></div>
+<button id="show_more" class="show-more">Show More</button>
+<div id="fadeout" class="fadeout"></div>
+<div id="canvases" style="margin-bottom:-3px; width: 1080px; background: DimGray"></div>
+<table id="control_buttons" class="control-box"><tr></tr></table>
+<button id="edit_button" class="edit-button">Start Editing</button>
+<div id="code_panel" class="code-panel" >
+  <p>Below is the code for the demo that's running.  Click links to see definitions!</p>
+  <div id="code_display" data-displayed="" class="code-display"></div>
+</div>
+<table id="class_list" class="class-list" style="display:none; border: 0px; width:1080px; border-radius:30px" >
+  <tr><td colspan="2" style="width:1058px">Click below to navigate through all classes that are defined. 
+    <p style="text-align:center; margin:0; font-weight:bold">featured-scene.js<br>Main Scene: <span name="main_demo_link"></span></p></td></tr>
+    <tr><td colspan="2" style="text-align:center; font-weight:bold"><a href="javascript:void(0);" id="index_src">This page's HTML source</a></td></tr>
+  <tr style="text-align:center"><td><b>tiny-graphics.js</b><br>(Always the same)</td><td><b>dependencies.js</b><br>(Different for every demo)</td></tr>
+  <tr></tr></table>
+<form name="new_demo_source_code" style="display:none; background:white; width:1080px; border-radius:30px">
+  <button type="button" id="toggle_controls" >Shrink/Open Controls</button><br>
+  <p><i><b>What can I put here?</b></i>  A JavaScript class, with any valid JavaScript inside.  Your code can use classes
+    from this demo, <br>or from ANY demo on the encyclopedia of code --  the dependencies will automatically be pulled in to run your demo!<br></p>
+  <button type="button" id="run_button" style="background:maroon">Run with Changes</button>
+  <button type="submit" >Save as New Webpage</button>
+  <input type="text" name="author"   placeholder="Author name">
+  <input type="text" name="password" placeholder="Password" style="display:none">
+  <span id="overwrite_panel" style="display:none"><label>Overwrite?<input type="checkbox" name="overwrite" autocomplete="off"></label></span>
+  <span id="beginner_panel"><label>Beginner Mode<input id="beginner_box" type="checkbox" checked></label></span>
+  <div id="expert_panel" style="display:none;"><label id="expert_label"></label></div>
+  <div id="submit_result" style="margin: 10px 0"></div>
+  <textarea rows="30" cols="140" style="white-space:pre; width:1070px; margin-bottom:30px" name="new_demo_code"></textarea><br>
+</form>
+<audio src="assets/turndone.wav"></audio>
+</body></html>
