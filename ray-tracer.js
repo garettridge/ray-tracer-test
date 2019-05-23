@@ -2,13 +2,79 @@ window.Ball = window.classes.Ball =
 class Ball      // These data members of a Ball below are automatically filled in for you from the text file, due to code that's already present in Ray_Tracer::parse_line().
 { constructor(               position, size, color, k_a, k_d, k_s, n, k_r, k_refract, refract_index   )
     { Object.assign( this, { position, size, color, k_a, k_d, k_s, n, k_r, k_refract, refract_index } )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       this.model_transform = Mat4.translation( this.position ).times( Mat4.scale( this.size ) );
       this.m_inv           = Mat4.inverse( this.model_transform );
     }
   intersect( ray, existing_intersection, minimum_dist )
     { // Given a ray, check if this Ball is in its path.  Its first argument is the ray, a key/value object with an origin and a direction as keys.  The next argument
       // is a record of the nearest intersection found so far (a Ball pointer, a t distance value along the ray, and a normal), updates it if needed, and returns it.
-      // Only counts intersections that are at least a given distance ahead along the ray.      
+      // Only counts intersections that are at least a given distance ahead along the ray.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       const ray_inObjectCoords               = { origin: this.m_inv.times( ray.origin ), dir: this.m_inv.times( ray.dir ) },
           dir_inObjectCoords_normSquared     = ray_inObjectCoords.dir.to3().dot( ray_inObjectCoords.dir.to3() ),
           dir_inObjectCoords_normSquared_inv = 1 / dir_inObjectCoords_normSquared,
@@ -99,6 +165,40 @@ class Ray_Tracer extends Scene_Component  // Read in a text file that describes 
       //        or k_refract, multiplied by the "complement" (1-alpha) of the Phong color this recursion.  Use argument is_primary to indicate whether this is the original
       //        ray or a recursion.  Use the argument light_to_check whenever a recursive call to trace() is done for computing a shadow ray.
       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       if( color_remaining.norm() < .3 )    return Color.of( 0, 0, 0, 1 );  // Each recursion, check if there's enough remaining potential for the pixel to be brightened.
 
       let closest_intersection = { distance: Number.POSITIVE_INFINITY, ball: null, normal: null }    // An empty intersection object
